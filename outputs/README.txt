@@ -1,0 +1,1 @@
+Generated test evidence lands here: telemetry JSON/CSV, parameter audit CSV, randomized Gazebo SDFs, and the offline release-gate CSV. Generated files are intentionally not included in the kit ZIP. Record firmware tag, test inputs, and results for each run.

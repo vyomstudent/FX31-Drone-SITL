@@ -1,0 +1,2 @@
+pymavlink>=2.4.40,<3
+MAVProxy>=1.8,<2

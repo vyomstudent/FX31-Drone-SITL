@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FX31 SITL Console</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#dce6f2;background:#101923}
+*{box-sizing:border-box}body{margin:0}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:20px 26px;border-bottom:1px solid #2d3b4a}.top h1{font-size:23px;margin:0}.sub{font-size:12px;color:#8fa9c0}.status{padding:7px 12px;border-radius:20px;background:#452b30;color:#ffc7c7;font-weight:700;font-size:12px}.status.online{background:#153d32;color:#7fe1ad}main{padding:23px;max-width:1250px;margin:auto}.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.card,.map,.notes{border:1px solid #304252;background:#172532;border-radius:12px;padding:16px}.cap{color:#91a9bd;font-size:12px}.value{font-size:19px;font-weight:650;margin-top:7px;min-height:23px}.grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:14px;margin-top:15px}.map h2{font-size:16px;margin:0 0 12px}.map svg{width:100%;background:#122332;border:1px solid #304353;border-radius:6px}.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#c1d2e2;margin-top:8px}.notes{line-height:1.65;font-size:14px}.notes h2{font-size:16px;margin-top:0}.warning{padding:11px;background:#2e2c20;border-left:3px solid #eac26f;border-radius:3px}.foot{color:#87a0b4;font-size:12px;margin-top:12px}@media(max-width:800px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.top{padding:12px}main{padding:12px}}
+</style>
+</head>
+<body>
+<header class="top"><div><h1>FX31 / Simulation Console</h1><div class="sub">ARDUPILOT SITL · LOCAL MAVLINK · READ-ONLY MONITOR</div></div><div id="connection" class="status">NO TELEMETRY</div></header>
+<main>
+<section class="cards">
+<div class="card"><div class="cap">Flight mode</div><div id="mode" class="value">—</div></div>
+<div class="card"><div class="cap">Motor state</div><div id="armed" class="value">—</div></div>
+<div class="card"><div class="cap">Relative altitude</div><div id="alt" class="value">—</div></div>
+<div class="card"><div class="cap">GPS fix / satellites</div><div id="gps" class="value">—</div></div>
+<div class="card"><div class="cap">Simulated battery</div><div id="battery" class="value">—</div></div>
+</section>
+<section class="grid">
+<div class="map"><h2>Illustrative rescue scene / local displacement</h2>
+<svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stylized map of a building, fire and rescue subjects">
+<defs><pattern id="sq" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#294050" stroke-width="1"/></pattern></defs>
+<rect width="680" height="440" fill="url(#sq)"/><rect x="180" y="88" width="300" height="220" rx="4" fill="#485866" stroke="#aab9c5" stroke-width="2"/>
+<rect x="206" y="114" width="82" height="72" fill="#253642" stroke="#aab9c5"/><rect x="368" y="114" width="85" height="72" fill="#253642" stroke="#aab9c5"/>
+<rect x="206" y="215" width="82" height="67" fill="#253642" stroke="#aab9c5"/><rect x="368" y="215" width="85" height="67" fill="#253642" stroke="#aab9c5"/>
+<text x="330" y="207" text-anchor="middle" font-size="19" fill="#f1f5f9">BUILDING</text>
+<text x="330" y="231" text-anchor="middle" font-size="12" fill="#c1cbd5">proxy / not geometry-registered</text>
+<circle cx="234" cy="158" r="15" fill="#e26f38" stroke="#ffd37a" stroke-width="2"/><text x="234" y="164" font-size="16" text-anchor="middle">🔥</text>
+<circle cx="422" cy="255" r="15" fill="#e26f38" stroke="#ffd37a" stroke-width="2"/><text x="422" y="261" font-size="16" text-anchor="middle">🔥</text>
+<circle cx="125" cy="327" r="12" fill="#5ab7a0"/><text x="125" y="333" text-anchor="middle" font-size="14">●</text>
+<circle cx="528" cy="155" r="12" fill="#5ab7a0"/><text x="528" y="161" text-anchor="middle" font-size="14">●</text>
+<circle cx="530" cy="360" r="12" fill="#5ab7a0"/><text x="530" y="366" text-anchor="middle" font-size="14">●</text>
+<path d="M 40 40 v -25 m0 0 -8 10 m8 -10 8 10" stroke="#c1d3e0" fill="none" stroke-width="2"/><text x="35" y="60" font-size="12" fill="#c1d3e0">N</text>
+<circle id="drone" cx="342" cy="355" r="16" fill="#81b7ff" stroke="#fff" stroke-width="3" opacity="0.25"/>
+<path id="flightArrow" d="M 342 341 L 342 324" stroke="#e1efff" stroke-width="3" opacity="0.25"/>
+<text id="droneLabel" x="342" y="387" text-anchor="middle" fill="#8eb9e9" font-size="12">awaiting telemetry</text>
+</svg>
+<div class="legend"><span>🟠 Fire proxy</span><span>🟢 Person stand-in</span><span>🔵 Drone telemetry</span></div>
+<div class="foot">Map objects are illustrations, not extracted positions from Gazebo. Drone displacement is from SITL's local NED origin at 4 px/m and may not align with scene coordinates. This page does not provide collision avoidance or mission control.</div>
+</div>
+<aside class="notes"><h2>Next checks</h2>
+<p><strong>1.</strong> Confirm the SITL console is running and telemetry connects.</p>
+<p><strong>2.</strong> In a second terminal run <code>bash scripts/run_smoke_test.sh</code>.</p>
+<p><strong>3.</strong> Examine the CSV/JSON evidence files under <code>outputs/</code>.</p>
+<p><strong>4.</strong> Run the opt-in simulated GUIDED → RTL scenario only after telemetry passes.</p>
+<div class="warning"><strong>Simulation only.</strong> No real Pixhawk, motor or servo is controlled from this page. Gazebo physics, cameras and perception are not part of this dashboard.</div>
+<p class="sub">Local stream: 127.0.0.1:14561<br>Dashboard refresh: 1 second<br><span id="last">Last MAVLink packet: none</span></p>
+</aside>
+</section>
+</main>
+<script>
+function put(id,value){document.getElementById(id).textContent=value;}
+const fmt=(v,d=1)=>Number.isFinite(v)?v.toFixed(d):'—';
+async function refresh(){try{const r=await fetch('/api/telemetry',{cache:'no-store'});if(!r.ok)throw Error('unavailable');const s=await r.json();
+const c=document.getElementById('connection');c.textContent=s.connected?'SIM TELEMETRY LIVE':'AWAITING SIM';c.classList.toggle('online',s.connected);
+put('mode',s.connected?s.mode:'—');put('armed',s.connected?(s.armed?'ARMED':'DISARMED'):'—');put('alt',fmt(s.relative_altitude_m)+' m');
+put('gps',s.gps_fix_type===null?'—':`${s.gps_fix_type} / ${s.satellites??'?'}`);put('battery',fmt(s.battery_v,2)+' V');
+put('last',`Last MAVLink packet: ${s.age_seconds??'none'} s ago`);
+const d=document.getElementById('drone'),a=document.getElementById('flightArrow'),l=document.getElementById('droneLabel');
+const x=342+(s.east_m??0)*4, y=355-(s.north_m??0)*4;
+d.setAttribute('cx',String(Math.max(16,Math.min(664,x))));d.setAttribute('cy',String(Math.max(16,Math.min(424,y))));d.setAttribute('opacity',s.connected?'1':'0.25');
+a.setAttribute('transform',`translate(${x-342},${y-355}) rotate(${s.heading_deg??0},342,355)`);a.setAttribute('opacity',s.connected?'1':'0.25');
+l.setAttribute('x',String(Math.max(60,Math.min(620,x))));l.setAttribute('y',String(Math.max(27,Math.min(429,y+32))));l.textContent=s.connected?`N ${fmt(s.north_m)}m | E ${fmt(s.east_m)}m`:'awaiting telemetry';
+}catch(e){document.getElementById('connection').textContent='DASHBOARD ERROR';}}
+refresh();setInterval(refresh,1000);
+</script>
+</body>
+</html>

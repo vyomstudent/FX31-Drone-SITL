@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="fx31_rescue_training_world">
+    <physics name="1ms" type="ignored"><max_step_size>0.001</max_step_size><real_time_factor>1.0</real_time_factor></physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"/>
+    <scene><ambient>0.55 0.55 0.55 1</ambient><background>0.65 0.72 0.78 1</background><shadows>true</shadows></scene>
+    <spherical_coordinates><surface_model>EARTH_WGS84</surface_model><latitude_deg>23.073</latitude_deg><longitude_deg>72.519</longitude_deg><elevation>50</elevation><heading_deg>0</heading_deg></spherical_coordinates>
+    <light type="directional" name="sun"><cast_shadows>true</cast_shadows><pose>0 0 30 0 0 0</pose><diffuse>0.85 0.82 0.75 1</diffuse><specular>0.2 0.2 0.2 1</specular><direction>-0.4 0.2 -0.9</direction></light>
+
+    <model name="ground"><static>true</static><link name="ground_link">
+      <pose>0 0 -0.1 0 0 0</pose><collision name="ground_collision"><geometry><box><size>180 180 0.2</size></box></geometry></collision>
+      <visual name="ground_visual"><geometry><box><size>180 180 0.2</size></box></geometry><material><ambient>0.42 0.43 0.40 1</ambient><diffuse>0.42 0.43 0.40 1</diffuse></material></visual>
+    </link></model>
+
+    <!-- Three-storey simplified building: x=18 m; front points toward negative Y. -->
+    <model name="rescue_building_A"><static>true</static><pose>18 0 0 0 0 0</pose><link name="facade">
+      <collision name="left_side_col"><pose>-3.9 0 4.5 0 0 0</pose><geometry><box><size>0.25 6.5 9</size></box></geometry></collision>
+      <visual name="left_side"><pose>-3.9 0 4.5 0 0 0</pose><geometry><box><size>0.25 6.5 9</size></box></geometry><material><ambient>0.62 0.59 0.53 1</ambient><diffuse>0.62 0.59 0.53 1</diffuse></material></visual>
+      <collision name="right_side_col"><pose>3.9 0 4.5 0 0 0</pose><geometry><box><size>0.25 6.5 9</size></box></geometry></collision>
+      <visual name="right_side"><pose>3.9 0 4.5 0 0 0</pose><geometry><box><size>0.25 6.5 9</size></box></geometry><material><ambient>0.62 0.59 0.53 1</ambient><diffuse>0.62 0.59 0.53 1</diffuse></material></visual>
+      <collision name="rear_col"><pose>0 3.1 4.5 0 0 0</pose><geometry><box><size>7.8 0.25 9</size></box></geometry></collision>
+      <visual name="rear"><pose>0 3.1 4.5 0 0 0</pose><geometry><box><size>7.8 0.25 9</size></box></geometry><material><ambient>0.58 0.56 0.52 1</ambient><diffuse>0.58 0.56 0.52 1</diffuse></material></visual>
+      <!-- Outer columns and center pier leave two open window bays. -->
+      <collision name="front_pier_left_col"><pose>-3.15 -3.05 4.5 0 0 0</pose><geometry><box><size>1.1 0.35 9</size></box></geometry></collision>
+      <visual name="front_pier_left"><pose>-3.15 -3.05 4.5 0 0 0</pose><geometry><box><size>1.1 0.35 9</size></box></geometry><material><ambient>0.74 0.71 0.64 1</ambient><diffuse>0.74 0.71 0.64 1</diffuse></material></visual>
+      <collision name="front_pier_right_col"><pose>3.15 -3.05 4.5 0 0 0</pose><geometry><box><size>1.1 0.35 9</size></box></geometry></collision>
+      <visual name="front_pier_right"><pose>3.15 -3.05 4.5 0 0 0</pose><geometry><box><size>1.1 0.35 9</size></box></geometry><material><ambient>0.74 0.71 0.64 1</ambient><diffuse>0.74 0.71 0.64 1</diffuse></material></visual>
+      <collision name="front_pier_center_col"><pose>0 -3.05 4.5 0 0 0</pose><geometry><box><size>0.3 0.35 9</size></box></geometry></collision>
+      <visual name="front_pier_center"><pose>0 -3.05 4.5 0 0 0</pose><geometry><box><size>0.3 0.35 9</size></box></geometry><material><ambient>0.74 0.71 0.64 1</ambient><diffuse>0.74 0.71 0.64 1</diffuse></material></visual>
+      <collision name="ground_floor_band_col"><pose>0 -3.05 0.35 0 0 0</pose><geometry><box><size>6.8 0.36 0.7</size></box></geometry></collision>
+      <visual name="ground_floor_band"><pose>0 -3.05 0.35 0 0 0</pose><geometry><box><size>6.8 0.36 0.7</size></box></geometry><material><ambient>0.75 0.72 0.67 1</ambient><diffuse>0.75 0.72 0.67 1</diffuse></material></visual>
+      <collision name="floor1_band_col"><pose>0 -3.05 3.0 0 0 0</pose><geometry><box><size>6.8 0.36 0.4</size></box></geometry></collision>
+      <visual name="floor1_band"><pose>0 -3.05 3.0 0 0 0</pose><geometry><box><size>6.8 0.36 0.4</size></box></geometry><material><ambient>0.75 0.72 0.67 1</ambient><diffuse>0.75 0.72 0.67 1</diffuse></material></visual>
+      <collision name="floor2_band_col"><pose>0 -3.05 6.0 0 0 0</pose><geometry><box><size>6.8 0.36 0.4</size></box></geometry></collision>
+      <visual name="floor2_band"><pose>0 -3.05 6.0 0 0 0</pose><geometry><box><size>6.8 0.36 0.4</size></box></geometry><material><ambient>0.75 0.72 0.67 1</ambient><diffuse>0.75 0.72 0.67 1</diffuse></material></visual>
+      <collision name="roof_band_col"><pose>0 -3.05 8.85 0 0 0</pose><geometry><box><size>6.8 0.36 0.3</size></box></geometry></collision>
+      <visual name="roof_band"><pose>0 -3.05 8.85 0 0 0</pose><geometry><box><size>6.8 0.36 0.3</size></box></geometry><material><ambient>0.48 0.47 0.43 1</ambient><diffuse>0.48 0.47 0.43 1</diffuse></material></visual>
+      <!-- balcony ledges with railing visuals -->
+      <collision name="balcony1_col"><pose>0 -3.65 3.2 0 0 0</pose><geometry><box><size>5.6 1.2 0.16</size></box></geometry></collision>
+      <visual name="balcony1"><pose>0 -3.65 3.2 0 0 0</pose><geometry><box><size>5.6 1.2 0.16</size></box></geometry><material><ambient>0.45 0.47 0.46 1</ambient><diffuse>0.45 0.47 0.46 1</diffuse></material></visual>
+      <collision name="balcony2_col"><pose>0 -3.65 6.2 0 0 0</pose><geometry><box><size>5.6 1.2 0.16</size></box></geometry></collision>
+      <visual name="balcony2"><pose>0 -3.65 6.2 0 0 0</pose><geometry><box><size>5.6 1.2 0.16</size></box></geometry><material><ambient>0.45 0.47 0.46 1</ambient><diffuse>0.45 0.47 0.46 1</diffuse></material></visual>
+      <visual name="balcony1_rail"><pose>0 -4.15 3.75 0 0 0</pose><geometry><box><size>5.5 0.07 0.95</size></box></geometry><material><ambient>0.24 0.27 0.28 1</ambient><diffuse>0.24 0.27 0.28 1</diffuse></material></visual>
+      <visual name="balcony2_rail"><pose>0 -4.15 6.75 0 0 0</pose><geometry><box><size>5.5 0.07 0.95</size></box></geometry><material><ambient>0.24 0.27 0.28 1</ambient><diffuse>0.24 0.27 0.28 1</diffuse></material></visual>
+      <!-- RGB fire markers only: emissive orange shapes, no thermal or smoke physics. -->
+      <visual name="fire_ground"><pose>-2 -3.42 1.2 0 0 0</pose><geometry><sphere><radius>0.38</radius></sphere></geometry><material><ambient>1 0.12 0 1</ambient><diffuse>1 0.18 0.01 1</diffuse><emissive>1 0.10 0 1</emissive></material></visual>
+      <visual name="fire_upper"><pose>2 -3.43 7.2 0 0 0</pose><geometry><sphere><radius>0.42</radius></sphere></geometry><material><ambient>1 0.12 0 1</ambient><diffuse>1 0.18 0.01 1</diffuse><emissive>1 0.10 0 1</emissive></material></visual>
+      <visual name="fire_balcony"><pose>2.7 -4.0 3.55 0 0 0</pose><geometry><sphere><radius>0.32</radius></sphere></geometry><material><ambient>1 0.12 0 1</ambient><diffuse>1 0.18 0.01 1</diffuse><emissive>1 0.10 0 1</emissive></material></visual>
+    </link></model>
+
+    <!-- Static human-shaped RGB targets for first detector plumbing checks. -->
+    <model name="person_ground_stand"><static>true</static><pose>12 -3.5 0 0 0 0</pose><link name="body">
+      <visual name="torso"><pose>0 0 0.95 0 0 0</pose><geometry><cylinder><radius>0.22</radius><length>0.75</length></cylinder></geometry><material><ambient>0.1 0.25 0.75 1</ambient><diffuse>0.1 0.25 0.75 1</diffuse></material></visual>
+      <visual name="head"><pose>0 0 1.48 0 0 0</pose><geometry><sphere><radius>0.19</radius></sphere></geometry><material><ambient>0.72 0.48 0.30 1</ambient><diffuse>0.72 0.48 0.30 1</diffuse></material></visual>
+      <visual name="legs"><pose>0 0 0.35 0 0 0</pose><geometry><box><size>0.42 0.25 0.7</size></box></geometry><material><ambient>0.12 0.14 0.18 1</ambient><diffuse>0.12 0.14 0.18 1</diffuse></material></visual>
+      <collision name="proxy"><pose>0 0 0.85 0 0 0</pose><geometry><cylinder><radius>0.25</radius><length>1.7</length></cylinder></geometry></collision>
+    </link></model>
+    <model name="person_ground_lying"><static>true</static><pose>23 -5.5 0.12 0 0.08 0.4</pose><link name="body">
+      <visual name="torso"><pose>0 0 0.18 0 1.45 0</pose><geometry><cylinder><radius>0.18</radius><length>0.9</length></cylinder></geometry><material><ambient>0.62 0.25 0.10 1</ambient><diffuse>0.62 0.25 0.10 1</diffuse></material></visual>
+      <visual name="head"><pose>0.50 0 0.18 0 0 0</pose><geometry><sphere><radius>0.16</radius></sphere></geometry><material><ambient>0.72 0.48 0.30 1</ambient><diffuse>0.72 0.48 0.30 1</diffuse></material></visual>
+      <collision name="proxy"><pose>0 0 0.2 0 0 0</pose><geometry><box><size>1.2 0.45 0.35</size></box></geometry></collision>
+    </link></model>
+    <model name="person_balcony_target"><static>true</static><pose>18 -4 3.3 0 0 0</pose><link name="body">
+      <visual name="torso"><pose>-0.5 0 0.85 0 0 0</pose><geometry><cylinder><radius>0.20</radius><length>0.70</length></cylinder></geometry><material><ambient>0.08 0.50 0.28 1</ambient><diffuse>0.08 0.50 0.28 1</diffuse></material></visual>
+      <visual name="head"><pose>-0.5 0 1.35 0 0 0</pose><geometry><sphere><radius>0.17</radius></sphere></geometry><material><ambient>0.72 0.48 0.30 1</ambient><diffuse>0.72 0.48 0.30 1</diffuse></material></visual>
+      <visual name="legs"><pose>-0.5 0 0.30 0 0 0</pose><geometry><box><size>0.36 0.24 0.58</size></box></geometry><material><ambient>0.08 0.12 0.18 1</ambient><diffuse>0.08 0.12 0.18 1</diffuse></material></visual>
+      <collision name="proxy"><pose>-0.5 0 0.75 0 0 0</pose><geometry><cylinder><radius>0.24</radius><length>1.5</length></cylinder></geometry></collision>
+    </link></model>
+
+    <model name="obstacle_block_B"><static>true</static><pose>31 5 0 0 0 0</pose><link name="block"><collision name="col"><pose>0 0 3 0 0 0</pose><geometry><box><size>7 7 6</size></box></geometry></collision><visual name="visual"><pose>0 0 3 0 0 0</pose><geometry><box><size>7 7 6</size></box></geometry><material><ambient>0.52 0.56 0.60 1</ambient><diffuse>0.52 0.56 0.60 1</diffuse></material></visual></link></model>
+    <model name="obstacle_block_C"><static>true</static><pose>3 17 0 0 0 0</pose><link name="block"><collision name="col"><pose>0 0 2 0 0 0</pose><geometry><box><size>8 6 4</size></box></geometry></collision><visual name="visual"><pose>0 0 2 0 0 0</pose><geometry><box><size>8 6 4</size></box></geometry><material><ambient>0.55 0.50 0.46 1</ambient><diffuse>0.55 0.50 0.46 1</diffuse></material></visual></link></model>
+
+    <!-- Requires the upstream ArduPilot Gazebo plugin model resource path. -->
+    <include><uri>model://iris_with_gimbal</uri><name>iris_with_gimbal</name><pose degrees="true">0 0 0.195 0 0 90</pose></include>
+  </world>
+</sdf>

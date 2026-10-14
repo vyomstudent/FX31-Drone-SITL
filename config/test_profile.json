@@ -1,0 +1,40 @@
+{
+  "project": "FX31 Drone SITL",
+  "version": "1.0.0",
+  "vehicle": "ArduCopter SITL",
+  "default_endpoint": "udpin:127.0.0.1:14560",
+  "servo_test": {
+    "dry_run_by_default": true,
+    "channel_range": [
+      9,
+      16
+    ],
+    "pwm_range_us": [
+      1000,
+      2000
+    ]
+  },
+  "guided_test": {
+    "dry_run_by_default": true,
+    "altitude_range_m": [
+      2,
+      5
+    ],
+    "default_altitude_m": 3
+  },
+  "fault_allowlist": [
+    "SIM_RC_FAIL",
+    "SIM_GPS_DISABLE",
+    "SIM_BATT_VOLTAGE",
+    "SIM_WIND_SPD",
+    "SIM_WIND_DIR",
+    "SIM_ACC_RND"
+  ],
+  "limitations": [
+    "Simulated command ACK is not actuator verification",
+    "The Iris model is not the FX31 airframe",
+    "Fire proxies are RGB visuals, not thermal ground truth"
+  ],
+  "firmware_baseline": "Copter-4.7.1 (override to match the target Pixhawk release)",
+  "simulator": "ArduPilot SITL + optional Gazebo Harmonic"
+}
